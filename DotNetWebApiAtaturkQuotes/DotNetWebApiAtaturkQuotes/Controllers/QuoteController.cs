@@ -16,7 +16,17 @@ namespace DotNetWebApiAtaturkQuotes.Controllers
         }
         public IHttpActionResult Get(int Id)
         {
-            var Quote = DB.Quotes.Where(x => x.Id == Id);
+            Quotes Quote;
+            if (Id == 0)
+            {
+                Random rand = new Random();
+                List<Quotes> _Quotes = DB.Quotes.ToList();
+                Quote = _Quotes[rand.Next(_Quotes.Count())];
+            }
+            else
+            {
+                Quote = DB.Quotes.Where(x => x.Id == Id).SingleOrDefault();
+            }
             if (Quote == null)
             {
                 return NotFound();
